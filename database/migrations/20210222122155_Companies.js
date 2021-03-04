@@ -4,7 +4,7 @@ exports.up = function(knex) {
     .createTable("Companies", (tbl) => {
         tbl.increments("id").unique().notNullable();
         tbl.string("URL").unique().notNullable();
-        tbl.string("Socials").unique().notNullable();
+        tbl.string("Contact").unique().notNullable();
     })
 };
 
