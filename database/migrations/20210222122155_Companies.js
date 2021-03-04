@@ -5,7 +5,6 @@ exports.up = function(knex) {
         tbl.increments("id").unique().notNullable();
         tbl.string("URL").unique().notNullable();
         tbl.string("Name");
-        tbl.string("Socials");
         tbl.string("Contact");
     })
 };
