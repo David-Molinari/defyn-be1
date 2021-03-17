@@ -40,9 +40,6 @@ module.exports = {
       min: 2,
       max: 10
     },
-    ssl: {
-      rejectUnauthorized: false
-    },
     migrations: {
       directory: './database/migrations'
     },
