@@ -5,6 +5,7 @@ const helmet = require("helmet");
 const companiesRouter = require("../routers/Companies");
 const miscRouter = require("../routers/Misc");
 const videosRouter = require("../routers/Videos");
+const usersRouter = require("../routers/Users");
 
 const server = express();
 
@@ -19,5 +20,6 @@ server.get('/', (req,res) =>
 server.use("/api/companies", companiesRouter);
 server.use("/api/videos", videosRouter);
 server.use("/api/misc", miscRouter);
+server.use("/api/users", usersRouter);
 
 module.exports = server;
