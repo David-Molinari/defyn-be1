@@ -24,9 +24,6 @@ module.exports = {
       user:     'username',
       password: 'password'
     },
-    ssl: {
-      rejectUnauthorized: false
-    },
     pool: {
       min: 2,
       max: 10
@@ -39,6 +36,9 @@ module.exports = {
   production: {
     client: 'pg',
     connection: process.env.HEROKU_POSTGRESQL_OLIVE_URL,
+    ssl: {
+      rejectUnauthorized: false
+    },
     pool: {
       min: 2,
       max: 10
