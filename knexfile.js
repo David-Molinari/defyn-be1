@@ -24,6 +24,9 @@ module.exports = {
       user:     'username',
       password: 'password'
     },
+    ssl: {
+      rejectUnauthorized: false
+    },
     pool: {
       min: 2,
       max: 10
