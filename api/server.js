@@ -9,7 +9,7 @@ const usersRouter = require("../routers/Users");
 
 const server = express();
 
-// const trustedSites = ['http://localhost:3000', 'https://defyn.co', 'https://energyti.me']
+const trustedSites = ['http://localhost:3000', 'https://defyn.co', 'https://energyti.me']
 
 // const corsOptions = {
 //         origin: function (origin, callback) {
@@ -20,6 +20,13 @@ const server = express();
 //                 }
 //         }
 // }
+
+server.use((req, res, next) => {
+        if(trustedSites.indexOf(origin) !== -1) {
+                res.header('Access-Control-Allow-Origin', `${trustedSites[trustedSites.indexOf(origin)]}`);
+                next();
+        }
+})
 
 server.use(helmet());
 server.use(cors());
