@@ -9,7 +9,7 @@ const usersRouter = require("../routers/Users");
 
 const server = express();
 
-const whitelist = ['http://localhost:3000', 'https://defyn.co', 'https://energyti.me']
+const whitelist = ['http://localhost:3000/', 'https://defyn.co/', 'https://energyti.me/']
 
 const corsOptions = {
         origin: function (origin, callback) {
