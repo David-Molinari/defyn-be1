@@ -11,25 +11,19 @@ const server = express();
 
 const trustedSites = ['http://localhost:3000', 'https://defyn.co', 'https://energyti.me']
 
-// const corsOptions = {
-//         origin: function (origin, callback) {
-//                 if(trustedSites.indexOf(origin) !== -1) {
-//                         callback(null, true)
-//                 } else {
-//                         callback(new Error('Not allowed by CORS'))
-//                 }
-//         }
-// }
-
-server.use((req, res, next) => {
-        if(trustedSites.indexOf(origin) !== -1) {
-                res.header('Access-Control-Allow-Origin', `${trustedSites[trustedSites.indexOf(origin)]}`);
-                next();
+const corsOptions = {
+        origin: function (origin, callback) {
+                console.log(origin)
+                if(trustedSites.indexOf(origin) !== -1) {
+                        callback(null, true)
+                } else {
+                        callback(new Error('Not allowed by CORS'))
+                }
         }
-})
+}
 
 server.use(helmet());
-server.use(cors());
+server.use(cors(corsOptions));
 server.use(express.json());
 
 server.get('/', (req,res) => 
