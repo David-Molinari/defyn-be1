@@ -9,20 +9,25 @@ const usersRouter = require("../routers/Users");
 
 const server = express();
 
-const trustedSites = ['http://localhost:3000', 'https://defyn.co', 'https://energyti.me']
+// const trustedSites = ['http://localhost:3000', 'https://defyn.co', 'https://energyti.me']
 
-const corsOptions = {
-        origin: function (origin, callback) {
-                if(trustedSites.indexOf(origin) !== -1) {
-                        callback(null, true)
-                } else {
-                        callback(new Error('Not allowed by CORS'))
-                }
-        }
-}
+// const corsOptions = {
+//         origin: function (origin, callback) {
+//                 if(trustedSites.indexOf(origin) !== -1) {
+//                         callback(null, true)
+//                 } else {
+//                         callback(new Error('Not allowed by CORS'))
+//                 }
+//         }
+// }
+
+server.use((req, res, next) => {
+        res.header("Access-Control-Allow-Origin", "*")
+        next()
+})
 
 server.use(helmet());
-server.use(cors(corsOptions));
+server.use(cors());
 server.use(express.json());
 
 server.get('/', (req,res) => 
