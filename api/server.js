@@ -14,6 +14,7 @@ const trustedSites = ['http://localhost:3000', 'https://defyn.co', 'https://ener
 const corsOptions = {
         origin: function (origin, callback) {
                 if(trustedSites.indexOf(origin) !== -1) {
+                        console.log('here')
                         callback(null, true)
                 } else {
                         callback(new Error('Not allowed by CORS'))

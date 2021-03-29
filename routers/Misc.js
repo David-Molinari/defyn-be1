@@ -3,6 +3,7 @@ const router = require("express").Router();
 const model = require("../models/Misc");
 
 router.post("/options/:URL", (req, res) => {
+    console.log(req.headers)
     model.readCompanies(req.params.URL)
     .then((response) => {
         model.readVideos(response[0].id)
