@@ -18,6 +18,25 @@ router.get("/:Company", (req, res) => {
         .catch((err) => res.send(err));
 });
 
+router.get("/options/:Company/:loggedIn", (req, res) => {
+    model.read(req.params.Company)
+        .then((response) => {
+            let vidOptions = []
+                if (req.params.loggedIn == "false") {
+                    response.forEach((vid) => {
+                        vidOptions.push({label: vid.Name, rating: 'not safe', value: vid.Name}) 
+                    })
+                    vidOptions[0].rating = 'safe'
+                } else {
+                    response.forEach((vid) => {
+                        vidOptions.push({label: vid.Name, rating: 'safe', value: vid.Name})
+                    })
+                }
+            res.json(vidOptions)
+        })
+        .catch((err) => res.send(err));
+});
+
 router.patch("/", (req, res) => {
     model.update(req.body)
         .then((response) => {
