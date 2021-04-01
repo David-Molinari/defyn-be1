@@ -12,31 +12,22 @@ router.post("/", (req, res) => {
 })
 
 // make sure timezones save in base time
-// likely need time formatting lib here
 router.get("/available/options/:Company/:offset", (req, res) => {
     model.readAvailable(req.params.Company)
         .then((response) => {
             let meetingOptions = []
             let usedTimesCache = {}
             response.forEach((meeting) => {
-                // only do process if not in usedTimesCache
                 if(meeting.StartTime in usedTimesCache) {
                 } else {
                     usedTimesCache[meeting.StartTime] = 1
-                    // alter times using offset
-                    console.log(Date(meeting.StartTime))
-                    console.log(meeting.StartTime.getHours())
-                    console.log(meeting.StartTime.setHours(meeting.StartTime.getHours() + 4))
-                    let startTime0 = parseInt(meeting.StartTime) 
-                        + parseInt(req.params.offset)
-                    let endTime0 = parseInt(meeting.EndTime) 
-                        + parseInt(req.params.offset)
-                    // take altered times and format using momentjs
-                    let timesCombo = moment(startTime0.toString()).format('MMMM Do, h:mm')
-                        + " - " + moment(endTime0.toString()).format('h:mm')
-                    console.log(timesCombo)
-                    // push
-                    meetingOptions.push(timesCombo)
+                    let startTimeAdj = timeAdjuster(meeting.StartTime, req.params.offset, true)
+                    let endTimeAdj = timeAdjuster(meeting.EndTime, req.params.offset, false)
+                    let timesCombo = startTimeAdj + "-" + endTimeAdj
+                    meetingOptions.push({
+                        label: timesCombo,
+                        value: timesCombo
+                    })
                 }
             })
             res.json(meetingOptions)
@@ -69,3 +60,22 @@ router.delete("/", (req, res) => {
 })
 
 module.exports = router;
+
+function timeAdjuster(time, offset, isStartTime) {
+    let startTimeAdj = new Date(parseInt(time))
+    if (Number.isInteger(offset/60)) {
+        startTimeAdj.setHours(startTimeAdj.getHours() + (offset/60))
+    } else {
+        let osString = (offset/60).toString()
+        let osArray = osString.split(".")
+        let osHours = parseInt(osArray[0])
+        let osMinutes = parseFloat(`.${osArray[1]}`) * 60
+        startTimeAdj.setHours(startTimeAdj.getHours() + osHours)
+        startTimeAdj.setMinutes(startTimeAdj.getMinutes() + osMinutes)
+    }
+    if (isStartTime) {
+        return moment(startTimeAdj).format("dddd, MMM Do, h:mm")
+    } else {
+        return moment(startTimeAdj).format("h:mm a")
+    }
+}

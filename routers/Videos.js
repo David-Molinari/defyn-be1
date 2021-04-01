@@ -18,11 +18,11 @@ router.get("/:Company", (req, res) => {
         .catch((err) => res.send(err));
 });
 
-router.get("/options/:Company/:loggedIn", (req, res) => {
+router.get("/options/:Company/:allOptions/:Type", (req, res) => {
     model.read(req.params.Company)
         .then((response) => {
             let vidOptions = []
-                if (req.params.loggedIn == "false") {
+                if (req.params.allOptions == "false") {
                     response.forEach((vid) => {
                         vidOptions.push({label: vid.Name, rating: 'not safe', value: vid.Name}) 
                     })

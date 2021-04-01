@@ -5,7 +5,7 @@ const helmet = require("helmet");
 const companiesRouter = require("../routers/Companies");
 const videosRouter = require("../routers/Videos");
 const meetingsRouter = require("../routers/Meetings");
-// const usersRouter = require("../routers/Users");
+const usersRouter = require("../routers/Users");
 
 const server = express();
 

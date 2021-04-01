@@ -1,25 +1,25 @@
-// const router = require("express").Router();
-// const model = require("../models/users");
-// const nodemailer = require('nodemailer');
-// const jwt = require("jsonwebtoken");
-// const bcrypt = require("bcryptjs");
+const router = require("express").Router();
+const model = require("../models/users");
+const nodemailer = require('nodemailer');
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcryptjs");
 
-// router.post("/checkifli", (req, res) => {
-//     const token = req.headers.authorization;
-//     const secret = secrets.jwtSecret;
+router.post("/checkifli", (req, res) => {
+    const token = req.headers.authorization;
+    const secret = secrets.jwtSecret;
   
-//     if (token) {
-//       jwt.verify(token, secret, (error, decodedToken) => {
-//         if (error) {
-//           res.status(401).json(error);
-//         } else {
-//             res.status(200).json({ loggedIn: true, decodedToken: decodedToken })
-//         }
-//       });
-//     } else {
-//       res.status(400).json({ loggedIn: false });
-//     }
-// })
+    if (token) {
+      jwt.verify(token, secret, (error, decodedToken) => {
+        if (error) {
+          res.status(401).json(error);
+        } else {
+            res.status(200).json({ loggedIn: true, decodedToken: decodedToken })
+        }
+      });
+    } else {
+      res.status(400).json({ loggedIn: false });
+    }
+})
 
 // router.post("/login", (req, res) => {
 //     let { Company, Email, Password } = req.body;
