@@ -13,7 +13,7 @@ const trustedSites = ['http://localhost:3000', 'https://defyn.co', 'https://ener
 
 const corsOptions = function (req, callback) {
         let corsOptions = {}
-        if(trustedSites.indexOf(req.header('Origin')) == -1) {
+        if(trustedSites.indexOf(req.header('Origin')) !== -1) {
                 corsOptions = { origin: true }
         } else {
                 corsOptions = { origin: false }
