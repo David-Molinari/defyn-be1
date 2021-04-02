@@ -26,7 +26,6 @@ server.use(cors(corsOptions));
 server.use(express.json());
 
 server.get('/', (req ,res) => {
-        console.log(res.getHeaders())
         res.send('Hello!')
 })
 
