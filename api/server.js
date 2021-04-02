@@ -11,23 +11,24 @@ const server = express();
 
 const trustedSites = ['http://localhost:3000', 'https://defyn.co', 'https://energyti.me']
 
-const corsOptions = {
-        origin: function (origin, callback) {
-                if(trustedSites.indexOf(origin) !== -1) {
-                        callback(null, true)
-                } else {
-                        callback(new Error('Not allowed by CORS'))
-                }
+const corsOptions = function (req, callback) {
+        let corsOptions = {}
+        if(trustedSites.indexOf(req.header('Origin')) == -1) {
+                corsOptions = { origin: true }
+        } else {
+                corsOptions = { origin: false }
         }
+        callback(null, corsOptions)
 }
 
 server.use(helmet());
 server.use(cors(corsOptions));
 server.use(express.json());
 
-server.get('/', (req ,res) => 
+server.get('/', (req ,res) => {
+        console.log(res.getHeaders())
         res.send('Hello!')
-)
+})
 
 server.use("/api/companies", companiesRouter);
 server.use("/api/videos", videosRouter);
