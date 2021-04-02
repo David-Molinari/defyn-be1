@@ -32,6 +32,6 @@ server.get('/', (req ,res) =>
 server.use("/api/companies", companiesRouter);
 server.use("/api/videos", videosRouter);
 server.use("/api/meetings", meetingsRouter);
-// server.use("/api/users", usersRouter);
+server.use("/api/users", usersRouter);
 
 module.exports = server;

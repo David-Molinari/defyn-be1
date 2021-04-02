@@ -3,6 +3,7 @@ const model = require("../models/users");
 const nodemailer = require('nodemailer');
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
+const secrets = require("../secrets")
 
 router.post("/checkifli", (req, res) => {
     const token = req.headers.authorization;
@@ -11,13 +12,13 @@ router.post("/checkifli", (req, res) => {
     if (token) {
       jwt.verify(token, secret, (error, decodedToken) => {
         if (error) {
-          res.status(401).json(error);
+          res.status(200).json({ error: error, loggedIn: false });
         } else {
             res.status(200).json({ loggedIn: true, decodedToken: decodedToken })
         }
       });
     } else {
-      res.status(400).json({ loggedIn: false });
+      res.status(200).json({ loggedIn: false });
     }
 })
 
@@ -259,4 +260,4 @@ router.post("/checkifli", (req, res) => {
 //     })
 //   }
 
-// module.exports = router;
+module.exports = router;

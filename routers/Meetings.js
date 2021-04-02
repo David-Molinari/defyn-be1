@@ -74,7 +74,7 @@ function timeAdjuster(time, offset, isStartTime) {
         startTimeAdj.setMinutes(startTimeAdj.getMinutes() + osMinutes)
     }
     if (isStartTime) {
-        return moment(startTimeAdj).format("dddd, MMM Do, h:mm")
+        return moment(startTimeAdj).format("MMM Do, h:mm")
     } else {
         return moment(startTimeAdj).format("h:mm a")
     }

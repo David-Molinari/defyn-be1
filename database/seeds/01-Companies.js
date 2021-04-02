@@ -6,7 +6,7 @@ exports.seed = function(knex) {
         {id: 2, URL: 'energyti.me', Name: 'EnergyTime', Type: 4},
         {id: 3, URL: 'saleti.me', Name: 'SaleTime', Type: 5},
         {id: 4, URL: 'efficientie.com', Name: 'Efficientie', Type: 2},
-        {id: 5, URL: 'localhost:3000', Name: 'Development', Type: 2}
+        {id: 5, URL: 'localhost:3000', Name: 'Development', Type: 1}
       ]);
     });
 };
