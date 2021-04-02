@@ -11,6 +11,7 @@ router.post("/", (req, res) => {
 })
 
 router.get("/:URL", (req, res) => {
+    console.log(res.getHeaders())
     model.read(req.params.URL)
         .then((response) => {
             res.json(response);
