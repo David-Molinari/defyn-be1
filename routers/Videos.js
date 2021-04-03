@@ -32,6 +32,7 @@ router.get("/options/:Company/:allOptions/:Type", (req, res) => {
                         vidOptions.push({label: vid.Name, rating: 'safe', value: vid.Name})
                     })
                 }
+            console.log(vidOptions)
             res.json(vidOptions)
         })
         .catch((err) => res.send(err));

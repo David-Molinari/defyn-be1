@@ -26,7 +26,8 @@ router.get("/available/options/:Company/:offset", (req, res) => {
                     let timesCombo = startTimeAdj + "-" + endTimeAdj
                     meetingOptions.push({
                         label: timesCombo,
-                        value: timesCombo
+                        value: timesCombo,
+                        id: meeting.id
                     })
                 }
             })
@@ -44,11 +45,19 @@ router.get("/booked/:Company", (req, res) => {
 });
 
 router.patch("/", (req, res) => {
-    model.update(req.body)
-      .then((response) => {
-          res.json(response);
-      })
-      .catch((err) => res.send(err));
+    model.readByID(req.body.id)
+    .then((response0)=> {
+      if(response0[0].LeadEmail == "") {
+        model.update(req.body)
+        .then((response1) => {
+            res.json(response1);
+        })
+        .catch((err) => res.send(err));
+      } else {
+          res.json("Meeting booked - please choose another.")
+      }
+    })
+    .catch((err) => res.send(err));
   });
 
 router.delete("/", (req, res) => {
