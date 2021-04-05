@@ -7,6 +7,8 @@ exports.up = function(knex) {
         tbl.string("Link").notNullable()
         tbl.string("Alt").notNullable()
         tbl.integer("Company").references("id").inTable("Companies").notNullable()
+            .onUpdate("CASCADE")
+            .onDelete("CASCADE")
     })
 };
 
