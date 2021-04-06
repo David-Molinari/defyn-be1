@@ -1,21 +1,21 @@
-// const db = require("../database/dbConfig.js");
+const db = require("../database/dbConfig.js");
 
-// module.exports = {
-//   find,
-//   add,
+module.exports = {
+  find,
+  add,
 //   changeEm,
 //   changePw,
 //   changeUn,
 //   del
-// };
+};
 
-// function find(insert) {
-//     return db("Users").where(insert);
-// }
+function find(insert) {
+    return db("Users").where(insert).select("*");
+}
 
-// function add(insert) {
-//     return db("Users").insert(insert);
-// }
+function add(insert) {
+    return db("Users").insert(insert);
+}
 
 // function changeEm(insert) {
 //     return db("Users").where({Email: insert.Email, Company: insert.Company})

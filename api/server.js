@@ -6,6 +6,7 @@ const companiesRouter = require("../routers/Companies");
 const videosRouter = require("../routers/Videos");
 const meetingsRouter = require("../routers/Meetings");
 const usersRouter = require("../routers/Users");
+const authRouter = require("../routers/Auth")
 
 const server = express();
 
@@ -33,5 +34,6 @@ server.use("/api/companies", companiesRouter);
 server.use("/api/videos", videosRouter);
 server.use("/api/meetings", meetingsRouter);
 server.use("/api/users", usersRouter);
+server.use("/api/auth", authRouter);
 
 module.exports = server;

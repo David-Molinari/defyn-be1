@@ -22,6 +22,14 @@ router.post("/checkifli", (req, res) => {
     }
 })
 
+router.post("/", (req, res) => {
+  model.add(req.body)
+  .then((response)=> {
+    res.status(200).json(response)
+  })
+  .catch((err)=> res.status(400).json(err))
+})
+
 // router.post("/login", (req, res) => {
 //     let { Company, Email, Password } = req.body;
 
