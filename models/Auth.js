@@ -16,8 +16,7 @@ function checkAttempt(insert) {
 }
 
 function setAsLoggedIn(insert) {
-    console.log(Date(), typeof Date())
-    return db("Logins").where("id", insert).insert("StartTime", Date())
+    return db("Logins").where("id", insert).update("StartTime", Date.now().toString())
 }
 
 function setAttemptExpired(insert) {

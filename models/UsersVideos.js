@@ -12,6 +12,7 @@ function create() {
 }
 
 function readBought(insert) {
+    console.log(insert)
     return db("UsersVideos").join("Videos", "UsersVideos.Video", "=", "Videos.id")
         .select("Videos.Name").where("Videos.Company", insert.Company)
         .andWhere("UsersVideos.User", insert.User);

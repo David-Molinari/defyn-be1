@@ -7,8 +7,8 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const secrets = require("../secrets");
 
-router.get("/login-check0/:company", (req, res) => {
-    const token = req.headers.authorization;
+router.get("/login-check0/:company/:token", (req, res) => {
+    const token = req.params.token
     const secret = secrets.jwtSecret;
   
     if (token) {
@@ -36,17 +36,19 @@ router.get("/login-check0/:company", (req, res) => {
     }
 })
 
-router.get("/login-check1/:attemptID/:loginTries", (req, res) => {
+router.get("/login-check1/:attemptID/:loginTries/:company", (req, res) => {
     if (req.params.loginTries <= 14) {
         model0.checkAttempt(req.params.attemptID)
         .then((response0)=> {
-            if(response0[0].StartTime == true) {
+            if(response0[0].StartTime.length !== 0) {
                 model1.readBought({
-                    Company: req.params.company,
+                    Company: parseInt(req.params.company),
                     User: response0[0].User
                 })
                 .then((response1)=> {
+                    console.log(response1, "1")
                     let token = generateToken(response0[0].User)
+                    console.log(token)
                     res.status(200).json({ 
                         loggedIn: true, 
                         token: token, 
@@ -62,7 +64,6 @@ router.get("/login-check1/:attemptID/:loginTries", (req, res) => {
     } else {
         model0.setAttemptExpired(req.params.attemptID)
         .then((response2)=> {
-            console.log(response2)
             res.status(200).json({loggedIn: false, expired: true})
         })
         .catch((err)=> res.status(400).json(err))
@@ -128,13 +129,14 @@ function loginEmailer(attemptID, email, res0) {
         //     <h3> After 5 min, link invalid </h3>
         //     `
         `
-            <form action="http://localhost:5001/api/auth/login-setter/${attemptID}" id="idForm">
+            <form action="http://localhost:5001/api/auth/login-setter/${attemptID}" id="idForm"
+                method="POST">
                 <button type="submit"> Login </button>
             </form>
             <script>
                 var my_func = function(event) {
                     event.preventDefault();
-                    
+
                 };
                 var form = document.getElementById("idForm");
                 form.addEventListener("submit", my_func, true);
