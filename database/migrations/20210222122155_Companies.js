@@ -5,6 +5,8 @@ exports.up = function(knex) {
         tbl.increments("id").unique().notNullable();
         tbl.string("URL").unique().notNullable();
         tbl.string("Name").notNullable();
+        tbl.string("Email").notNullable();
+        tbl.string("StripeID").notNullable();
         tbl.integer("Type").notNullable();
     })
 };

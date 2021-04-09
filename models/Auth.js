@@ -4,7 +4,10 @@ module.exports = {
   add,
   checkAttempt,
   setAsLoggedIn,
-  setAttemptExpired
+  setAttemptExpired,
+  addCode,
+  getCodeInfo,
+  deleteCode
 };
 
 function add(insert) {
@@ -16,9 +19,22 @@ function checkAttempt(insert) {
 }
 
 function setAsLoggedIn(insert) {
-    return db("Logins").where("id", insert).update("StartTime", Date.now().toString())
+    return db("Logins").where("id", insert).update("StartTime", Date.now().toString());
 }
 
 function setAttemptExpired(insert) {
-    return db("Logins").where("id", insert).update("StartTime", "expired")
+    return db("Logins").where("id", insert).update("StartTime", "expired");
+}
+
+function addCode(insert) {
+    return db("Codes").insert(insert);
+}
+
+function getCodeInfo(insert) {
+    console.log(insert)
+    return db("Codes").select("*").where("Codes.Email", insert)
+}
+
+function deleteCode(insert) {
+    return db("Codes").where("Codes.Email", insert).delete();
 }

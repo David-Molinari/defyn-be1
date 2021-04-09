@@ -2,10 +2,12 @@ const router = require("express").Router();
 const model0 = require("../models/auth");
 const model1 = require("../models/usersvideos")
 const model2 = require("../models/users")
+const model3 = require("../models/companies")
 const nodemailer = require('nodemailer');
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const secrets = require("../secrets");
+const stripe = require("stripe")("sk_test_51HjAGuFGKxXMH4MkpB3JUiorRLmlnTWODuPMv1AfzjE0V77LrBmAneZbghxxBOd49Tt4NepOpYz9asB4ekL7lwxP00aBCUD0rl")
 
 router.get("/login-check0/:company/:token", (req, res) => {
     const token = req.params.token
@@ -92,6 +94,80 @@ router.post("/login-setter/:attemptID", (req, res) => {
         }
     })
 })
+
+router.post("/add-acct/add-code", (req, res) => {
+    const rounds = process.env.HASH_ROUNDS || 14;
+    const hash = bcrypt.hashSync(req.body.Code, rounds);
+    const encryptedCode = hash;
+
+    model0.addCode({Code: encryptedCode, Email: req.body.Email})
+    .then((response)=> {
+        res.status(200).json(response)
+    })
+    .catch((err)=> res.status(400).json(err))
+})
+
+router.post("/add-acct/check-code", (req, res) => {
+    console.log("1")
+    model0.getCodeInfo(req.body.Email)
+    .then(async (response0)=> {
+        if (bcrypt.compareSync(req.body.Code, response0[0].Code)) {
+            model3.readStripeIDByEmail(req.body.Email)
+            .then(async (response1)=> {
+                console.log(response1, "2")
+                let accountID
+                if (response1[0].StripeID.length == true) {
+                    accountID = response1[0].StripeID
+                } else {
+                    const account = await stripe.accounts.create({
+                        type: "express",
+                        email: req.body.Email
+                    })
+                    try {
+                        accountID = account.id
+                    }
+                    catch {
+                        res.status(400).json({auth: false})
+                    }
+                }
+                const accountLinks = await stripe.accountLinks.create({
+                    account: accountID,
+                    refresh_url: `http://localhost:3000/add-acct`,
+                    return_url: 'http://localhost:3000/add-acct',
+                    type: 'account_onboarding',
+                });
+                try {
+                    console.log(accountLinks, "5")
+                    res.status(200).json({auth: true, url: accountLinks.url})
+                }
+                catch {
+                    console.log(accountLinks, "5.5")
+                    res.status(400).json({auth: false})
+                }
+            })
+            .catch(()=> res.status(200).json(false))
+        } else {
+            res.status(400).json({auth: false})
+        }
+    })
+    .catch(()=> res.status(200).json(false))
+})
+
+router.delete("/add-acct/delete-code", (req, res) => {
+    model0.getCodeInfo(req.body.Email)
+    .then((response0)=> {
+        if (bcrypt.compareSync(req.body.Code, response0[0].Code)) {
+            model0.deleteCode(req.body.Email)
+            .then((response1)=> {
+                res.status(200).json(response1)
+            })
+        } else {
+            res.status(400).json("Invalid code")
+        }
+    })
+    .catch((err)=> res.status(400).json(err))
+})
+
 
 module.exports = router
 
