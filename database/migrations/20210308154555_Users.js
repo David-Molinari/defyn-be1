@@ -7,6 +7,8 @@ exports.up = function(knex) {
           // tbl.string("Username").notNullable();
           // tbl.string("Password").notNullable();
           tbl.integer("Company").references("id").inTable("Companies").notNullable()
+            .onUpdate("CASCADE")
+            .onDelete("CASCADE")
       })
   };
   

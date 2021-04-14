@@ -5,6 +5,8 @@ exports.up = function(knex) {
           tbl.increments("id").unique().notNullable();
           tbl.string("StartTime").notNullable();
           tbl.integer("User").references("id").inTable("Users").notNullable()
+            .onUpdate("CASCADE")
+            .onDelete("CASCADE")
       })
   };
   

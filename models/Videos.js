@@ -16,7 +16,7 @@ function read(insert) {
 }
 
 function update(insert) {
-    return db("Videos").insert(insert).where("id", insert);
+    return db("Videos").update(insert).where("id", insert.id);
 }
 
 function del(insert) {

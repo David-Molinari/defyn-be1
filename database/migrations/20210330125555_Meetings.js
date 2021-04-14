@@ -9,6 +9,8 @@ exports.up = function(knex) {
           tbl.string("StartTime").notNullable();
           tbl.string("EndTime").notNullable();
           tbl.integer("Company").references("id").inTable("Companies").notNullable()
+            .onUpdate("CASCADE")
+            .onDelete("CASCADE")
       })
   };
   

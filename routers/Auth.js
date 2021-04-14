@@ -95,7 +95,7 @@ router.post("/login-setter/:attemptID", (req, res) => {
     })
 })
 
-router.post("/add-acct/add-code", (req, res) => {
+router.post("/admin/add-code", (req, res) => {
     const rounds = process.env.HASH_ROUNDS || 14;
     const hash = bcrypt.hashSync(req.body.Code, rounds);
     const encryptedCode = hash;
@@ -107,42 +107,67 @@ router.post("/add-acct/add-code", (req, res) => {
     .catch((err)=> res.status(400).json(err))
 })
 
-router.post("/add-acct/check-code", (req, res) => {
-    console.log("1")
+router.post("/admin/check-code", async (req, res) => {
     model0.getCodeInfo(req.body.Email)
-    .then(async (response0)=> {
+    .then((response0)=> {
         if (bcrypt.compareSync(req.body.Code, response0[0].Code)) {
             model3.readStripeIDByEmail(req.body.Email)
             .then(async (response1)=> {
-                console.log(response1, "2")
-                let accountID
-                if (response1[0].StripeID.length == true) {
-                    accountID = response1[0].StripeID
-                } else {
-                    const account = await stripe.accounts.create({
-                        type: "express",
-                        email: req.body.Email
-                    })
-                    try {
-                        accountID = account.id
+                if (response1[0].StripeID.length > 0) {
+                    const account = await stripe.accounts.retrieve(response1[0].StripeID)
+                    try{
+                        console.log(account.charges_enabled)
+                        if (account.charges_enabled == true) {
+                            res.status(200).json({auth: true, token: generateToken(-1)})
+                        }
+                        else {
+                            const accountLinks = await stripe.accountLinks.create({
+                                account: account.id,
+                                refresh_url: `http://localhost:3000/admin`,
+                                return_url: 'http://localhost:3000/admin',
+                                type: 'account_onboarding',
+                            });
+                            try {
+                                res.status(200).json({auth: true, url: accountLinks.url})
+                            }
+                            catch {
+                                res.status(400).json({auth: false})
+                            }
+                        }
                     }
                     catch {
                         res.status(400).json({auth: false})
                     }
-                }
-                const accountLinks = await stripe.accountLinks.create({
-                    account: accountID,
-                    refresh_url: `http://localhost:3000/add-acct`,
-                    return_url: 'http://localhost:3000/add-acct',
-                    type: 'account_onboarding',
-                });
-                try {
-                    console.log(accountLinks, "5")
-                    res.status(200).json({auth: true, url: accountLinks.url})
-                }
-                catch {
-                    console.log(accountLinks, "5.5")
-                    res.status(400).json({auth: false})
+                } else {
+                    const account = await stripe.accounts.create({
+                        type: "standard",
+                        email: req.body.Email
+                    })
+                    try {
+                        model3.update({id: account.id, email: req.body.Email})
+                        .then(async (response2)=> {
+                            if (response2) {
+                                const accountLinks = await stripe.accountLinks.create({
+                                    account: account.id,
+                                    refresh_url: `http://localhost:3000/admin`,
+                                    return_url: 'http://localhost:3000/admin',
+                                    type: 'account_onboarding',
+                                });
+                                try {
+                                    res.status(200).json({auth: true, url: accountLinks.url})
+                                }
+                                catch {
+                                    res.status(400).json({auth: false})
+                                }
+                            } else {
+                                res.status(400).json({auth: false})
+                            }
+                        })
+                        .catch(()=> res.status(400).json({auth: false}))
+                    }
+                    catch {
+                        res.status(400).json({auth: false})
+                    }
                 }
             })
             .catch(()=> res.status(200).json(false))
@@ -153,7 +178,7 @@ router.post("/add-acct/check-code", (req, res) => {
     .catch(()=> res.status(200).json(false))
 })
 
-router.delete("/add-acct/delete-code", (req, res) => {
+router.delete("/admin/delete-code", (req, res) => {
     model0.getCodeInfo(req.body.Email)
     .then((response0)=> {
         if (bcrypt.compareSync(req.body.Code, response0[0].Code)) {

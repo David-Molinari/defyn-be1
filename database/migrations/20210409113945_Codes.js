@@ -5,6 +5,8 @@ exports.up = function(knex) {
         tbl.increments("id").unique().notNullable()
         tbl.integer("Code").unique().notNullable()
         tbl.integer("Email").references("Email").inTable("Companies").notNullable()
+          .onUpdate("CASCADE")
+          .onDelete("CASCADE")
       })
 };
 

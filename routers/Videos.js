@@ -1,4 +1,7 @@
 const router = require("express").Router();
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcryptjs");
+const secrets = require("../secrets");
 
 const model = require("../models/Videos");
 
@@ -37,7 +40,15 @@ router.get("/options/:Company/:allOptions/:Type", (req, res) => {
         .catch((err) => res.send(err));
 });
 
-router.patch("/", (req, res) => {
+router.patch("/:token", (req, res) => {
+    let token = req.params.token
+    jwt.verify(token, secrets.jwtSecret, (error) => {
+        if (error) {
+          res.status(401).json({ message: "you cannot pass!" });
+        } else {
+          next();
+        }
+      });
     model.update(req.body)
         .then((response) => {
             res.json(response);

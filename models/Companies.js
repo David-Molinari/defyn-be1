@@ -22,7 +22,7 @@ function readStripeIDByEmail(insert) {
 }
 
 function update(insert) {
-    return db("Companies").insert(insert).where("id", insert);
+    return db("Companies").update("StripeID", insert.id).where("Email", insert.email);
 }
 
 function del(insert) {
