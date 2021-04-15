@@ -7,7 +7,7 @@ module.exports = {
   del
 };
 
-function create() {
+function create(insert) {
     return db("Videos").insert(insert);
 }
 
@@ -20,5 +20,5 @@ function update(insert) {
 }
 
 function del(insert) {
-    return db("Videos").del().where("id", insert);
+    return db("Videos").del().where({id: insert.id, Name: insert.Name});
 }

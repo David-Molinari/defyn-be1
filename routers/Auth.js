@@ -48,9 +48,7 @@ router.get("/login-check1/:attemptID/:loginTries/:company", (req, res) => {
                     User: response0[0].User
                 })
                 .then((response1)=> {
-                    console.log(response1, "1")
-                    let token = generateToken(response0[0].User)
-                    console.log(token)
+                    let token = generateToken(response0[0].User, req.params.company)
                     res.status(200).json({ 
                         loggedIn: true, 
                         token: token, 
@@ -107,7 +105,7 @@ router.post("/admin/add-code", (req, res) => {
     .catch((err)=> res.status(400).json(err))
 })
 
-router.post("/admin/check-code", async (req, res) => {
+router.post("/admin/check-code/:companyUrl/:companyID", async (req, res) => {
     model0.getCodeInfo(req.body.Email)
     .then((response0)=> {
         if (bcrypt.compareSync(req.body.Code, response0[0].Code)) {
@@ -116,15 +114,14 @@ router.post("/admin/check-code", async (req, res) => {
                 if (response1[0].StripeID.length > 0) {
                     const account = await stripe.accounts.retrieve(response1[0].StripeID)
                     try{
-                        console.log(account.charges_enabled)
                         if (account.charges_enabled == true) {
-                            res.status(200).json({auth: true, token: generateToken(-1)})
+                            res.status(200).json({auth: true, token: generateToken(-1, req.params.companyID, true)})
                         }
                         else {
                             const accountLinks = await stripe.accountLinks.create({
                                 account: account.id,
-                                refresh_url: `http://localhost:3000/admin`,
-                                return_url: 'http://localhost:3000/admin',
+                                refresh_url: `http://${req.params.companyUrl}/admin`,
+                                return_url: `http://${req.params.companyUrl}/admin`,
                                 type: 'account_onboarding',
                             });
                             try {
@@ -196,15 +193,18 @@ router.delete("/admin/delete-code", (req, res) => {
 
 module.exports = router
 
-function generateToken(user) {
+function generateToken(user, company, admin) {
     const payload = {
-      UserID: user
+      UserID: user,
+      CompanyID: company
     };
     const secret = secrets.jwtSecret;
-    const options = {
-      expiresIn: "5d",
-    };
-  
+    let options = {expiresIn: ""}
+    if (admin) {
+      options.expiresIn = "5h"
+    } else {
+      options.expiresIn = "5d"
+    }
     return jwt.sign(payload, secret, options);
   }
 

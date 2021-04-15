@@ -31,7 +31,6 @@ function addCode(insert) {
 }
 
 function getCodeInfo(insert) {
-    console.log(insert)
     return db("Codes").select("*").where("Codes.Email", insert)
 }
 
