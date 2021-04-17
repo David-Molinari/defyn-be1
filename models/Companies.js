@@ -4,6 +4,7 @@ module.exports = {
   create,
   read,
   readStripeIDByEmail,
+  readVideoOrder,
   update,
   del
 };
@@ -19,6 +20,10 @@ function read(insert) {
 function readStripeIDByEmail(insert) {
     console.log(insert)
     return db("Companies").select("StripeID").where("Email", insert);
+}
+
+function readVideoOrder(insert) {
+    return db("Companies").select("VideoOrder").where("id", insert)
 }
 
 function update(insert) {
