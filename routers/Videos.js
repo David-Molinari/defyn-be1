@@ -20,6 +20,8 @@ router.post("/:token", (req, res) => {
       });
 })
 
+
+
 router.get("/:Company", (req, res) => {
     model0.read(req.params.Company)
         .then((response) => {
