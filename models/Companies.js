@@ -18,7 +18,6 @@ function read(insert) {
 }
 
 function readStripeIDByEmail(insert) {
-    console.log(insert)
     return db("Companies").select("StripeID").where("Email", insert);
 }
 

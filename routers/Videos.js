@@ -59,7 +59,6 @@ router.get("/options/:Company/:allOptions/:Type", (req, res) => {
                     vidOptions1.push({label: value, rating: 'safe', value: value})
                 })
             }
-            console.log(vidOptions1)
             res.json(vidOptions1)
         })
         .catch((err) => res.send(err));
@@ -68,15 +67,31 @@ router.get("/options/:Company/:allOptions/:Type", (req, res) => {
 });
 
 router.get("/options/admin/:Company", (req, res) => {
-    model0.read(req.params.Company)
-    .then((response) => {
-        let vidOptions = [{label: "Add video", rating: 'safe', value: "Add video"}]
-        response.forEach((vid) => {
-            vidOptions.push({label: vid.Name, rating: 'safe', value: vid.Name})
+    model1.readVideoOrder(req.params.Company)
+    .then((response0)=> {
+        let VideoOrder = response0[0].VideoOrder
+        model0.read(req.params.Company)
+        .then((response1) => {
+            let vidOptions0 = {}
+            let vidOptions1 = []
+            for (let i = 0; i < VideoOrder.length; i++) {
+                if (VideoOrder[i-1] === " ") {
+                    let VOSlice = VideoOrder.slice(i)
+                    let VONum = VOSlice.slice(0, VOSlice.search(" "))
+                    vidOptions0[VONum] = ""
+                } 
+            }
+            response1.forEach((vid) => {
+                vidOptions0[vid.id.toString()] = vid.Name
+            })
+            Object.values(vidOptions0).forEach((value) => {
+                vidOptions1.push({label: value, rating: 'safe', value: value})
+            })
+            console.log(vidOptions1)
+            res.json(vidOptions1)
         })
-        res.json(vidOptions)
+        .catch((err) => res.send(err));
     })
-    .catch((err) => res.send(err));
 });
 
 router.patch("/:token", (req, res) => {
