@@ -3,6 +3,8 @@ const db = require("../database/dbConfig.js");
 module.exports = {
   create,
   read,
+  readByID,
+  readByNameCompany,
   update,
   del
 };
@@ -13,6 +15,14 @@ function create(insert) {
 
 function read(insert) {
     return db("Videos").select("*").where("Company", insert);
+}
+
+function readByID(insert) {
+    return db("Videos").select("*").where("id", insert);
+}
+
+function readByNameCompany(insert) {
+    return db("Videos").select("*").where("Name", insert.Name).andWhere("Company", insert.Company);
 }
 
 function update(insert) {

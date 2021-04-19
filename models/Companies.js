@@ -3,6 +3,7 @@ const db = require("../database/dbConfig.js");
 module.exports = {
   create,
   read,
+  readByID,
   readStripeIDByEmail,
   readVideoOrder,
   update,
@@ -15,6 +16,10 @@ function create(insert) {
 
 function read(insert) {
     return db("Companies").select("*").where("URL", insert);
+}
+
+function readByID(insert) {
+    return db("Companies").select("*").where("id", insert);
 }
 
 function readStripeIDByEmail(insert) {

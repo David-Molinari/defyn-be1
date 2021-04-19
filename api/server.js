@@ -7,6 +7,8 @@ const videosRouter = require("../routers/Videos");
 const meetingsRouter = require("../routers/Meetings");
 const usersRouter = require("../routers/Users");
 const authRouter = require("../routers/Auth")
+const usersVideosRouter = require("../routers/UsersVideos")
+const paymentRouter = require("../routers/Payment")
 
 const server = express();
 
@@ -35,5 +37,7 @@ server.use("/api/videos", videosRouter);
 server.use("/api/meetings", meetingsRouter);
 server.use("/api/users", usersRouter);
 server.use("/api/auth", authRouter);
+server.use("/api/users-videos", usersVideosRouter);
+server.use("/api/payment", paymentRouter);
 
 module.exports = server;

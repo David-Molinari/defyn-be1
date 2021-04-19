@@ -7,7 +7,7 @@ module.exports = {
   del
 };
 
-function create() {
+function create(insert) {
     return db("UsersVideos").insert(insert);
 }
 

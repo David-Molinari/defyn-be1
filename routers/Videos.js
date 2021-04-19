@@ -25,7 +25,7 @@ router.post("/:token", (req, res) => {
 router.get("/:Company", (req, res) => {
     model0.read(req.params.Company)
         .then((response) => {
-            res.json(response);
+            res.status(200).json(response);
         })
         .catch((err) => res.send(err));
 });
@@ -89,7 +89,6 @@ router.get("/options/admin/:Company", (req, res) => {
             Object.values(vidOptions0).forEach((value) => {
                 vidOptions1.push({label: value, rating: 'safe', value: value})
             })
-            console.log(vidOptions1)
             res.json(vidOptions1)
         })
         .catch((err) => res.send(err));
