@@ -36,7 +36,6 @@ function update(insert) {
 }
 
 function updateVideoOrder(insert) {
-    console.log(insert, 'insert')
     return db("Companies").update("VideoOrder", insert.voUpdated).where("id", insert.company);
 }
 

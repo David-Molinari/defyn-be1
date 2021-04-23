@@ -30,5 +30,5 @@ function update(insert) {
 }
 
 function del(insert) {
-    return db("Videos").del().where({id: insert.id, Name: insert.Name});
+    return db("Videos").del().where("id", insert.id);
 }
