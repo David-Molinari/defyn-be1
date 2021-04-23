@@ -1,6 +1,5 @@
 const router = require("express").Router();
 const model0 = require("../models/auth");
-const model1 = require("../models/usersvideos")
 const model2 = require("../models/users")
 const model3 = require("../models/companies")
 const nodemailer = require('nodemailer');
@@ -19,18 +18,18 @@ router.get("/login-check0/:company/:token", (req, res) => {
           res.status(200).json({ error: error, loggedIn: false });
         } else {
             // get bought videos and pass
-            model1.readBought({
-                Company: req.params.company,
-                User: decodedToken.UserID
-              })
-            .then((response)=> {
+            // model1.readBought({
+            //     Company: req.params.company,
+            //     User: decodedToken.UserID
+            //   })
+            // .then((response)=> {
                 res.status(200).json({ 
                     loggedIn: true, 
                     decodedToken: decodedToken, 
-                    boughtVideos: response
+                    // boughtVideos: response
                 })
-            })
-            .catch((err)=> res.status(400).json({loggedIn: false, err}))
+            // })
+            // .catch((err)=> res.status(400).json({loggedIn: false, err}))
         }
       });
     } else {
@@ -43,19 +42,19 @@ router.get("/login-check1/:attemptID/:loginTries/:company", (req, res) => {
         model0.checkAttempt(req.params.attemptID)
         .then((response0)=> {
             if(response0[0].StartTime.length !== 0) {
-                model1.readBought({
-                    Company: parseInt(req.params.company),
-                    User: response0[0].User
-                })
-                .then((response1)=> {
+                // model1.readBought({
+                //     Company: parseInt(req.params.company),
+                //     User: response0[0].User
+                // })
+                // .then((response1)=> {
                     let token = generateToken(response0[0].User, req.params.company)
                     res.status(200).json({ 
                         loggedIn: true, 
                         token: token, 
-                        boughtVideos: response1
+                        // boughtVideos: response1
                     })
-                })
-                .catch((err)=> res.status(400).json({loggedIn: false, err}))
+                // })
+                // .catch((err)=> res.status(400).json({loggedIn: false, err}))
             } else {
                 res.status(200).json({loggedIn: false, expired: false})
             }
@@ -111,7 +110,7 @@ router.post("/admin/check-code/:companyUrl/:companyID", async (req, res) => {
         if (bcrypt.compareSync(req.body.Code, response0[0].Code)) {
             model3.readStripeIDByEmail(req.body.Email)
             .then(async (response1)=> {
-                if (response1[0].StripeID.length > 0) {
+                if (response1[0].StripeID.length > 1) {
                     const account = await stripe.accounts.retrieve(response1[0].StripeID)
                     try{
                         if (account.charges_enabled == true) {
@@ -135,7 +134,7 @@ router.post("/admin/check-code/:companyUrl/:companyID", async (req, res) => {
                     catch {
                         res.status(400).json({auth: false})
                     }
-                } else {
+                } else if (response1[0].StripeID == " ") {
                     const account = await stripe.accounts.create({
                         type: "standard",
                         email: req.body.Email
@@ -165,6 +164,8 @@ router.post("/admin/check-code/:companyUrl/:companyID", async (req, res) => {
                     catch {
                         res.status(400).json({auth: false})
                     }
+                } else {
+                    res.status(200).json({auth: true, token: generateToken(-1, req.params.companyID, true)})
                 }
             })
             .catch(()=> res.status(200).json(false))

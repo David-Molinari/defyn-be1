@@ -1,19 +1,41 @@
 const router = require("express").Router();
 const jwt = require("jsonwebtoken");
-const bcrypt = require("bcryptjs");
 const secrets = require("../secrets");
-
 const model0 = require("../models/Videos");
 const model1 = require("../models/Companies")
 
-router.post("/:token", (req, res) => {
-    jwt.verify(req.params.token, secrets.jwtSecret, (error) => {
+router.post("/", (req, res) => {
+    jwt.verify(req.headers.authorization, secrets.jwtSecret, (error) => {
         if (error) {
           res.status(401).json({ message: "you cannot pass!" });
         } else {
-            model0.create(req.body)
-            .then((response) => {
-                res.status(200).json(response)
+            console.log(req.body.form, 'form')
+            // alter video order string
+            model0.create(req.body.form)
+            .then((response0) => {
+                console.log(response0, 'response')
+                let videoOrderUpdated = ""
+                for (let i = 0; i < req.body.videoOrder.length; i++) {
+                    if (req.body.videoOrder[i-1] === " ") {
+                        let VOSlice = req.body.videoOrder.slice(i)
+                        let VONum = VOSlice.slice(0, VOSlice.search(" "))
+                        if (VONum == req.body.idAbove) {
+                            let insert = response0[0].toString() + ' ' + VONum
+                            console.log(insert, 'insert')
+                            console.log(req.body.videoOrder.slice(i + VONum.length), 'slice')
+                            videoOrderUpdated = req.body.videoOrder.slice(0, i) + insert + req.body.videoOrder.slice(i + VONum.length)
+                            break
+                        }
+                    }
+                }
+                console.log(req.body.videoOrder, videoOrderUpdated)
+                model1.updateVideoOrder({company: req.body.form.Company, voUpdated: videoOrderUpdated})
+                .then((response1)=> {
+                    console.log(response1, 'response1')
+                    console.log(videoOrderUpdated, 'voU')
+                    res.status(200).json({id: response1, voUpdated: videoOrderUpdated})
+                })
+                .catch((err) => res.send(err))
             })
             .catch((err) => res.send(err))
         }
@@ -30,34 +52,34 @@ router.get("/:Company", (req, res) => {
         .catch((err) => res.send(err));
 });
 
-router.get("/options/:Company/:allOptions/:Type", (req, res) => {
+router.get("/options/not-admin/:Company/:allOptions", (req, res) => {
     model1.readVideoOrder(req.params.Company)
     .then((response0)=> {
         let VideoOrder = response0[0].VideoOrder
         model0.read(req.params.Company)
         .then((response1) => {
-            let vidOptions0 = {}
+            let vidOptions0 = new Map()
             let vidOptions1 = []
             for (let i = 0; i < VideoOrder.length; i++) {
                 if (VideoOrder[i-1] === " ") {
                     let VOSlice = VideoOrder.slice(i)
                     let VONum = VOSlice.slice(0, VOSlice.search(" "))
-                    vidOptions0[VONum] = ""
+                    vidOptions0.set(VONum, "")
                 } 
             }
             if (req.params.allOptions == "false") {
                 response1.forEach((vid) => {
-                    vidOptions0[vid.id.toString()] = vid.Name
+                    vidOptions0.set(vid.id.toString(), vid.Name)
                 })
-                vidOptions0.values(vidOptions0).forEach((value) => {
+                vidOptions0.forEach((value, key) => {
                     vidOptions1.push({label: value, rating: 'not safe', value: value})
                 })
                 vidOptions1[0].rating = 'safe'
             } else {
                 response1.forEach((vid) => {
-                    vidOptions0[vid.id.toString()] = vid.Name
+                    vidOptions0.set(vid.id.toString(), vid.Name)
                 })
-                Object.values(vidOptions0).forEach((value) => {
+                vidOptions0.forEach((value, key) => {
                     vidOptions1.push({label: value, rating: 'safe', value: value})
                 })
             }
@@ -74,29 +96,30 @@ router.get("/options/admin/:Company", (req, res) => {
         let VideoOrder = response0[0].VideoOrder
         model0.read(req.params.Company)
         .then((response1) => {
-            let vidOptions0 = {}
+            let vidOptions0 = new Map()
             let vidOptions1 = []
             for (let i = 0; i < VideoOrder.length; i++) {
                 if (VideoOrder[i-1] === " ") {
                     let VOSlice = VideoOrder.slice(i)
                     let VONum = VOSlice.slice(0, VOSlice.search(" "))
-                    vidOptions0[VONum] = ""
+                    vidOptions0.set(VONum, "")
                 } 
             }
             response1.forEach((vid) => {
-                vidOptions0[vid.id.toString()] = vid.Name
+                vidOptions0.set(vid.id.toString(), vid.Name)
             })
-            Object.values(vidOptions0).forEach((value) => {
+            vidOptions0.forEach((value, key) => {
                 vidOptions1.push({label: value, rating: 'safe', value: value})
             })
+            vidOptions1.push({label: "Add video", rating: 'safe', value: "Add video"})
             res.json(vidOptions1)
         })
         .catch((err) => res.send(err));
     })
 });
 
-router.patch("/:token", (req, res) => {
-    jwt.verify(req.params.token, secrets.jwtSecret, (error) => {
+router.patch("/", (req, res) => {
+    jwt.verify(req.headers.authorization, secrets.jwtSecret, (error) => {
         if (error) {
           res.status(401).json({ message: "you cannot pass!" });
         } else {
@@ -109,8 +132,8 @@ router.patch("/:token", (req, res) => {
       });
   });
 
-router.delete("/:token/:Name/:id", (req, res) => {
-    jwt.verify(req.params.token, secrets.jwtSecret, (error) => {
+router.delete("/:Name/:id", (req, res) => {
+    jwt.verify(req.headers.authorization, secrets.jwtSecret, (error) => {
         if (error) {
           res.status(401).json({ message: "you cannot pass!" });
         } else {
