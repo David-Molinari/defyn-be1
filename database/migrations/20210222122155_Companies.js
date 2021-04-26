@@ -8,7 +8,7 @@ exports.up = function(knex) {
         tbl.string("Email").notNullable();
         tbl.string("StripeID").notNullable();
         tbl.string("VideoOrder").notNullable();
-        tbl.integer("Price").notNullable();
+        tbl.string("Price").notNullable();
     })
 };
 

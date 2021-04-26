@@ -8,7 +8,6 @@ router.get("/payment-intent/:videoName/:company", (req, res) => {
     // .then((response0)=> {
         model1.readByID(req.params.company)
         .then(async (response1) => {
-            console.log(response1[0].StripeID)
             const paymentIntent = await stripe.paymentIntents.create({
                 amount: parseInt(response1[0].Price),
                 currency: 'usd',

@@ -126,20 +126,25 @@ router.patch("/:company", (req, res) => {
                     console.log(response0)
                     let voUpdated
                     let index0 = response0[0].VideoOrder.search(req.body.form.id.toString())
-                    let slice0 = response0[0].VideoOrder.slice(0, index0)
+                    console.log(`-${index0}-`)
+                    let slice0 = response0[0].VideoOrder.slice(0, index0 - 1)
+                    console.log(`-${slice0}-`)
                     let slice1 = response0[0].VideoOrder.slice(index0)
+                    console.log(`-${slice1}-`)
                     let index1 = slice1.search(" ")
-                    let voUpdatedTemp = slice0 + slice1.slice(index1 + 1)
-                    console.log(voUpdatedTemp, req.body.videoIDAbove)
+                    console.log(`-${index1}-`)
+                    let voUpdatedTemp = slice0 + slice1.slice(index1)
+                    console.log(`-${voUpdatedTemp}-`, req.body.videoIDAbove)
                     if (req.body.videoIDAbove === -1) {
                         voUpdated = voUpdatedTemp + req.body.form.id.toString() + ' '
+                        console.log(`-${voUpdated}-`)
                     } else {
                         let addPlace = voUpdatedTemp.search(req.body.videoIDAbove)
                         slice0 = voUpdatedTemp.slice(0, addPlace)
                         slice1 = voUpdatedTemp.slice(addPlace)
                         voUpdated = slice0 + req.body.form.id.toString() + ' ' + slice1
                     }
-                    console.log(voUpdated, 'voUpdated')
+                    console.log(`-${voUpdated}-`, 'voUpdated')
                     model1.updateVideoOrder({voUpdated: voUpdated, company: req.params.company})
                     .then(() => {
                         if (req.body.form.Name || req.body.form.Link) {
