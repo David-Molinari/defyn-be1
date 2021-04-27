@@ -5,7 +5,7 @@ exports.up = function(knex) {
         tbl.increments("id").unique().notNullable();
         tbl.string("URL").unique().notNullable();
         tbl.string("Name").notNullable();
-        tbl.string("Email").notNullable();
+        tbl.string("Email").unique().notNullable();
         tbl.string("StripeID").notNullable();
         tbl.string("VideoOrder").notNullable();
         tbl.string("Price").notNullable();
