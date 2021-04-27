@@ -125,7 +125,7 @@ router.patch("/:company", (req, res) => {
                 console.log('here', req.params.company)
                 model1.readVideoOrder(req.params.company)
                 .then((response0) => {
-                    console.log(response0)
+                    console.log(response0, 5)
                     let voUpdated
                     let index0 = response0[0].VideoOrder.search(req.body.form.id.toString())
                     console.log(`-${index0}-`)

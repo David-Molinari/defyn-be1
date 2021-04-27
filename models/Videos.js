@@ -10,7 +10,7 @@ module.exports = {
 };
 
 function create(insert) {
-    return db("Videos").insert(insert);
+    return db("Videos").insert(insert).returning('id');
 }
 
 function read(insert) {
