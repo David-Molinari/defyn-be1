@@ -9,8 +9,7 @@ router.post("/", (req, res) => {
         if (error) {
           res.status(401).json({ message: "you cannot pass!" });
         } else {
-            console.log(req.body)
-            model0.create(req.body.form, 0)
+            model0.create(req.body.form)
             .then((response0) => {
                 console.log(response0, 1)
                 let videoOrderUpdated = ""
