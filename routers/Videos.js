@@ -9,8 +9,10 @@ router.post("/", (req, res) => {
         if (error) {
           res.status(401).json({ message: "you cannot pass!" });
         } else {
-            model0.create(req.body.form)
+            console.log(req.body)
+            model0.create(req.body.form, 0)
             .then((response0) => {
+                console.log(response0, 1)
                 let videoOrderUpdated = ""
                 if (req.body.idAbove === -1) {
                     videoOrderUpdated = req.body.videoOrder + response0[0].toString() + ' '
@@ -27,6 +29,7 @@ router.post("/", (req, res) => {
                         }
                     }
                 }
+                console.log(videoOrderUpdated)
                 model1.updateVideoOrder({company: req.body.form.Company, voUpdated: videoOrderUpdated})
                 .then((response1)=> {
                     res.status(200).json({id: response0, voUpdated: videoOrderUpdated})
