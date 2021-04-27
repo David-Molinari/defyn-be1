@@ -98,11 +98,17 @@ router.post("/admin/add-code", (req, res) => {
     const hash = bcrypt.hashSync(req.body.Code, rounds);
     const encryptedCode = hash;
 
+    console.log(req.body)
+
     model0.addCode({Code: encryptedCode, Email: req.body.Email})
     .then((response)=> {
+        console.log(response, 1)
         res.status(200).json(response)
     })
-    .catch((err)=> res.status(400).json(err))
+    .catch((err)=> {
+        console.log(err, 2)
+        res.status(400).json(err)
+    })
 })
 
 router.post("/admin/check-code/:companyUrl/:companyID", async (req, res) => {
