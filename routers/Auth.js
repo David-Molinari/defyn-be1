@@ -17,6 +17,7 @@ router.get("/login-check0/:company/:token", (req, res) => {
         if (error) {
           res.status(200).json({ error: error, loggedIn: false });
         } else {
+            
             // get bought videos and pass
             // model1.readBought({
             //     Company: req.params.company,
