@@ -1,7 +1,7 @@
 const router = require("express").Router();
-const model0 = require("../models/auth");
-const model2 = require("../models/users")
-const model3 = require("../models/companies")
+const model0 = require("../models/Auth");
+const model2 = require("../models/Users")
+const model3 = require("../models/Companies")
 const nodemailer = require('nodemailer');
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
@@ -17,7 +17,7 @@ router.get("/login-check0/:company/:token", (req, res) => {
         if (error) {
           res.status(200).json({ error: error, loggedIn: false });
         } else {
-            
+
             // get bought videos and pass
             // model1.readBought({
             //     Company: req.params.company,

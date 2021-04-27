@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const stripe = require("stripe")("sk_test_51HjAGuFGKxXMH4MkpB3JUiorRLmlnTWODuPMv1AfzjE0V77LrBmAneZbghxxBOd49Tt4NepOpYz9asB4ekL7lwxP00aBCUD0rl")
-const model0 = require("../models/users")
-const model1 = require("../models/companies")
+const model0 = require("../models/Users")
+const model1 = require("../models/Companies")
 
 router.get("/payment-intent/:videoName/:company", (req, res) => {
     // model0.readByNameCompany({Name: req.params.videoName, Company: req.params.company})
