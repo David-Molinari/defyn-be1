@@ -13,12 +13,13 @@ const server = express();
 const trustedSites = ['http://localhost:3000', 'https://defyn.co', 'https://energyti.me']
 
 const corsOptions = function (req, callback) {
+        console.log(trustedSites.indexOf(req.header('Origin')), 0)
         let corsOptions = {}
         if(trustedSites.indexOf(req.header('Origin')) !== -1) {
-                console.log('here', 0)
+                console.log('here', 1)
                 corsOptions = { origin: true }
         } else {
-                console.log('here', 1)
+                console.log('here', 2)
                 corsOptions = { origin: false }
         }
         callback(null, corsOptions)
