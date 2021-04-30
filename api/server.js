@@ -12,6 +12,7 @@ const server = express();
 
 // const trustedSites = ['http://localhost:3000', 'https://defyn.co']
 const trustedSites = process.env.TRUSTED_SITES.split(',')
+console.log(trustedSites)
 
 const corsOptions = function (req, callback) {
         let corsOptions = {}
