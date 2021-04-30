@@ -11,6 +11,7 @@ router.post("/", (req, res) => {
         } else {
             model0.create(req.body.form)
             .then((response0) => {
+                console.log(response0)
                 let videoOrderUpdated = ""
                 if (req.body.idAbove === -1) {
                     videoOrderUpdated = req.body.videoOrder + response0[0].toString() + ' '
@@ -27,6 +28,7 @@ router.post("/", (req, res) => {
                         }
                     }
                 }
+                console.log(req.body.form.Company, videoOrderUpdated)
                 model1.updateVideoOrder({company: req.body.form.Company, voUpdated: videoOrderUpdated})
                 .then((response1)=> {
                     res.status(200).json({id: response0, voUpdated: videoOrderUpdated})
