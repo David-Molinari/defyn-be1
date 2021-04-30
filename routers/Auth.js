@@ -111,67 +111,66 @@ router.post("/admin/check-code/:companyUrl/:companyID", async (req, res) => {
     model0.getCodeInfo(req.body.Email)
     .then((response0)=> {
         if (bcrypt.compareSync(req.body.Code, response0[0].Code)) {
-            model3.readStripeIDByEmail(req.body.Email)
-            .then(async (response1)=> {
-                if (response1[0].StripeID.length > 1) {
-                    const account = await stripe.accounts.retrieve(response1[0].StripeID)
-                    try{
-                        if (account.charges_enabled == true) {
-                            res.status(200).json({auth: true, token: generateToken(-1, req.params.companyID, true)})
-                        }
-                        else {
-                            const accountLinks = await stripe.accountLinks.create({
-                                account: account.id,
-                                refresh_url: `http://${req.params.companyUrl}/admin`,
-                                return_url: `http://${req.params.companyUrl}/admin`,
-                                type: 'account_onboarding',
-                            });
-                            try {
-                                res.status(200).json({auth: true, url: accountLinks.url})
-                            }
-                            catch {
-                                res.status(400).json({auth: false})
-                            }
-                        }
-                    }
-                    catch {
-                        res.status(400).json({auth: false})
-                    }
-                } else if (response1[0].StripeID == " ") {
-                    const account = await stripe.accounts.create({
-                        type: "standard",
-                        email: req.body.Email
-                    })
-                    try {
-                        model3.update({id: account.id, email: req.body.Email})
-                        .then(async (response2)=> {
-                            if (response2) {
-                                const accountLinks = await stripe.accountLinks.create({
-                                    account: account.id,
-                                    refresh_url: `http://localhost:3000/admin`,
-                                    return_url: 'http://localhost:3000/admin',
-                                    type: 'account_onboarding',
-                                });
-                                try {
-                                    res.status(200).json({auth: true, url: accountLinks.url})
-                                }
-                                catch {
-                                    res.status(400).json({auth: false})
-                                }
-                            } else {
-                                res.status(400).json({auth: false})
-                            }
-                        })
-                        .catch(()=> res.status(400).json({auth: false}))
-                    }
-                    catch {
-                        res.status(400).json({auth: false})
-                    }
-                } else {
+            // model3.readStripeIDByEmail(req.body.Email)
+            // .then(async (response1)=> {
+                // if (response1[0].StripeID.length > 1) {
+                //     const account = await stripe.accounts.retrieve(response1[0].StripeID)
+                //     try{
+                //         if (account.charges_enabled == true) {
+                //             res.status(200).json({auth: true, token: generateToken(-1, req.params.companyID, true)})
+                //         }
+                //         else {
+                //             const accountLinks = await stripe.accountLinks.create({
+                //                 account: account.id,
+                //                 refresh_url: `http://${req.params.companyUrl}/admin`,
+                //                 return_url: `http://${req.params.companyUrl}/admin`,
+                //                 type: 'account_onboarding',
+                //             });
+                //             try {
+                //                 res.status(200).json({auth: true, url: accountLinks.url})
+                //             }
+                //             catch {
+                //                 res.status(400).json({auth: false})
+                //             }
+                //         }
+                //     }
+                //     catch {
+                //         res.status(400).json({auth: false})
+                //     }
+                // } else if (response1[0].StripeID == " ") {
+                //     const account = await stripe.accounts.create({
+                //         type: "standard",
+                //         email: req.body.Email
+                //     })
+                //     try {
+                //         model3.update({id: account.id, email: req.body.Email})
+                //         .then(async (response2)=> {
+                //             if (response2) {
+                //                 const accountLinks = await stripe.accountLinks.create({
+                //                     account: account.id,
+                //                     refresh_url: `http://localhost:3000/admin`,
+                //                     return_url: 'http://localhost:3000/admin',
+                //                     type: 'account_onboarding',
+                //                 });
+                //                 try {
+                //                     res.status(200).json({auth: true, url: accountLinks.url})
+                //                 }
+                //                 catch {
+                //                     res.status(400).json({auth: false})
+                //                 }
+                //             } else {
+                //                 res.status(400).json({auth: false})
+                //             }
+                //         })
+                //         .catch(()=> res.status(400).json({auth: false}))
+                //     }
+                //     catch {
+                //         res.status(400).json({auth: false})
+                //     }
+                // } else {
                     res.status(200).json({auth: true, token: generateToken(-1, req.params.companyID, true)})
-                }
-            })
-            .catch(()=> res.status(200).json(false))
+            // })
+            // .catch(()=> res.status(200).json(false))
         } else {
             res.status(400).json({auth: false})
         }
