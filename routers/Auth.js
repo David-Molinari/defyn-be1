@@ -70,17 +70,17 @@ router.get("/login-check1/:attemptID/:loginTries/:company", (req, res) => {
     }
 })
 
-router.post("/login-attempt/:company", (req, res0) => {
-    model2.find({Email: req.body.Email, Company: req.params.company})
-    .then((response0)=> {
-        model0.add({User: response0[0].id, StartTime: ""})
-        .then((response1)=> {
-            loginEmailer(response1[0], req.body.Email, res0)
-        })
-        .catch((err)=> res0.status(400).json(err))
-    })
-    .catch((err)=> res0.status(400).json(err))
-})
+// router.post("/login-attempt/:company", (req, res0) => {
+//     model2.find({Email: req.body.Email, Company: req.params.company})
+//     .then((response0)=> {
+//         model0.add({User: response0[0].id, StartTime: ""})
+//         .then((response1)=> {
+//             loginEmailer(response1[0], req.body.Email, res0)
+//         })
+//         .catch((err)=> res0.status(400).json(err))
+//     })
+//     .catch((err)=> res0.status(400).json(err))
+// })
 
 router.post("/login-setter/:attemptID", (req, res) => {
     model0.setAsLoggedIn(req.params.attemptID)
@@ -211,47 +211,47 @@ function generateToken(user, company, admin) {
     return jwt.sign(payload, secret, options);
   }
 
-function loginEmailer(attemptID, email, res0) {
-    const transporter = nodemailer.createTransport({
-        service: 'gmail',
-        auth: {
-          user: 'david.m.molinari@gmail.com',
-          pass: secrets.mailPassword
-        }
-      });
+// function loginEmailer(attemptID, email, res0) {
+//     const transporter = nodemailer.createTransport({
+//         service: 'gmail',
+//         auth: {
+//           user: 'david.m.molinari@gmail.com',
+//           pass: secrets.mailPassword
+//         }
+//       });
 
-      const mailOptions = {
-        from: 'david.m.molinari@gmail.com',
-        to: email,
-        subject: 'Click "login" to login',
-        html: 
-        // `
-        //     <form action="http://localhost:5001/api/auth/login-setter/${attemptID}"
-        //         method="POST">
-        //         <button> Login </button>
-        //     </form>
-        //     <h3> After 5 min, link invalid </h3>
-        //     `
-        `
-            <form action="http://localhost:5001/api/auth/login-setter/${attemptID}" id="idForm"
-                method="POST">
-                <button type="submit"> Login </button>
-            </form>
-            <script>
-                var my_func = function(event) {
-                    event.preventDefault();
+//       const mailOptions = {
+//         from: 'david.m.molinari@gmail.com',
+//         to: email,
+//         subject: 'Click "login" to login',
+//         html: 
+//         // `
+//         //     <form action="http://localhost:5001/api/auth/login-setter/${attemptID}"
+//         //         method="POST">
+//         //         <button> Login </button>
+//         //     </form>
+//         //     <h3> After 5 min, link invalid </h3>
+//         //     `
+//         `
+//             <form action="http://localhost:5001/api/auth/login-setter/${attemptID}" id="idForm"
+//                 method="POST">
+//                 <button type="submit"> Login </button>
+//             </form>
+//             <script>
+//                 var my_func = function(event) {
+//                     event.preventDefault();
 
-                };
-                var form = document.getElementById("idForm");
-                form.addEventListener("submit", my_func, true);
-            </script>`
-      }
+//                 };
+//                 var form = document.getElementById("idForm");
+//                 form.addEventListener("submit", my_func, true);
+//             </script>`
+//       }
       
-      transporter.sendMail(mailOptions, (error, info) => {
-        if (error) {
-            res0.status(400).json(error)
-        } else {
-            res0.status(200).json({message: "email is a member", attemptID: attemptID})
-        }
-      })
-}
+//       transporter.sendMail(mailOptions, (error, info) => {
+//         if (error) {
+//             res0.status(400).json(error)
+//         } else {
+//             res0.status(200).json({message: "email is a member", attemptID: attemptID})
+//         }
+//       })
+// }

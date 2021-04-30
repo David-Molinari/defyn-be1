@@ -6,9 +6,13 @@ exports.up = function(knex) {
         tbl.string("URL").unique().notNullable();
         tbl.string("Name").notNullable();
         tbl.string("Email").unique().notNullable();
-        tbl.string("StripeID").notNullable();
+        // tbl.string("StripeID").notNullable();
         tbl.string("VideoOrder").notNullable();
-        tbl.string("Price").notNullable();
+        // tbl.string("Price").notNullable();
+        // tbl.bytea("Logo")
+        // tbl.string("Color1")
+        // tbl.string("Color2")
+        // tbl.string("Font")
     })
 };
 

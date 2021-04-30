@@ -10,16 +10,14 @@ const paymentRouter = require("../routers/Payment")
 
 const server = express();
 
-const trustedSites = ['http://localhost:3000', 'https://defyn.co', 'https://energyti.me']
+// const trustedSites = ['http://localhost:3000', 'https://defyn.co']
+const trustedSites = process.env.TRUSTED_SITES.split(',')
 
 const corsOptions = function (req, callback) {
-        console.log(trustedSites.indexOf(req.header('Origin')), 0)
         let corsOptions = {}
         if(trustedSites.indexOf(req.header('Origin')) !== -1) {
-                console.log('here', 1)
                 corsOptions = { origin: true }
         } else {
-                console.log('here', 2)
                 corsOptions = { origin: false }
         }
         callback(null, corsOptions)
