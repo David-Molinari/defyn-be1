@@ -5,9 +5,9 @@ module.exports = {
   read,
   readByID,
   readStripeIDByEmail,
-  readVideoOrder,
+  readOrder,
   update,
-  updateVideoOrder,
+  updateOrder,
   del
 };
 
@@ -27,16 +27,16 @@ function readStripeIDByEmail(insert) {
     return db("Companies").select("StripeID").where("Email", insert);
 }
 
-function readVideoOrder(insert) {
-    return db("Companies").select("VideoOrder").where("id", insert)
+function readOrder(insert) {
+    return db("Companies").select("Order").where("id", insert)
 }
 
 function update(insert) {
     return db("Companies").update("StripeID", insert.id).where("Email", insert.email);
 }
 
-function updateVideoOrder(insert) {
-    return db("Companies").update("VideoOrder", insert.voUpdated).where("id", insert.company);
+function updateOrder(insert) {
+    return db("Companies").update("Order", insert.voUpdated).where("id", insert.company);
 }
 
 function del(insert) {

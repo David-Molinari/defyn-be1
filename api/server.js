@@ -3,7 +3,7 @@ const cors = require("cors");
 const helmet = require("helmet");
 
 const companiesRouter = require("../routers/Companies");
-const videosRouter = require("../routers/Videos");
+const mediaRouter = require("../routers/Media");
 const usersRouter = require("../routers/Users");
 const authRouter = require("../routers/Auth")
 const paymentRouter = require("../routers/Payment")
@@ -32,7 +32,7 @@ server.get('/', (req ,res) => {
 })
 
 server.use("/api/companies", companiesRouter);
-server.use("/api/videos", videosRouter);
+server.use("/api/media", mediaRouter);
 server.use("/api/users", usersRouter);
 server.use("/api/auth", authRouter);
 server.use("/api/payment", paymentRouter);

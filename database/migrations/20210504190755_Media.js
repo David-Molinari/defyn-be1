@@ -1,7 +1,7 @@
 
 exports.up = function(knex) {
     return knex.schema
-    .createTable("Videos", (tbl) => {
+    .createTable("Media", (tbl) => {
         tbl.increments("id").unique().notNullable()
         tbl.string("Name").notNullable()
         tbl.string("Link").notNullable()
@@ -10,9 +10,10 @@ exports.up = function(knex) {
             .onUpdate("CASCADE")
             .onDelete("CASCADE")
     })
-};
-
-exports.down = function(knex) {
+  };
+  
+  exports.down = function(knex) {
     return knex.schema
-    .dropTableIfExists("Videos");
-};
+    .dropTableIfExists("Media");
+  };
+  

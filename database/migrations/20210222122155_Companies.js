@@ -7,7 +7,7 @@ exports.up = function(knex) {
         tbl.string("Name").notNullable();
         tbl.string("Email").unique().notNullable();
         // tbl.string("StripeID").notNullable();
-        tbl.string("VideoOrder").notNullable();
+        tbl.string("Order").notNullable();
         // tbl.string("Price").notNullable();
         // tbl.bytea("Logo")
         // tbl.string("Color1")
