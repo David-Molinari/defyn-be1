@@ -11,25 +11,25 @@ router.post("/", (req, res) => {
         } else {
             model0.create(req.body.form)
             .then((response0) => {
-                let mediaOrderUpdated = ""
+                let orderUpdated = ""
                 if (req.body.idAbove === -1) {
-                    mediaOrderUpdated = req.body.mediaOrder + response0[0].toString() + ' '
+                    orderUpdated = req.body.order + response0[0].toString() + ' '
                 } else {
-                    for (let i = 0; i < req.body.mediaOrder.length; i++) {
-                        if (req.body.mediaOrder[i-1] === " ") {
-                            let OrderSlice = req.body.mediaOrder.slice(i)
+                    for (let i = 0; i < req.body.order.length; i++) {
+                        if (req.body.order[i-1] === " ") {
+                            let OrderSlice = req.body.order.slice(i)
                             let OrderNum = OrderSlice.slice(0, OrderSlice.search(" "))
                             if (OrderNum == req.body.idAbove) {
                                 let insert = response0[0].toString() + ' ' + OrderNum
-                                mediaOrderUpdated = req.body.mediaOrder.slice(0, i) + insert + req.body.mediaOrder.slice(i + OrderNum.length)
+                                orderUpdated = req.body.order.slice(0, i) + insert + req.body.order.slice(i + OrderNum.length)
                                 break
                             }
                         }
                     }
                 }
-                model1.updateOrder({company: req.body.form.Company, mUpdated: mediaOrderUpdated})
+                model1.updateOrder({company: req.body.form.Company, mUpdated: orderUpdated})
                 .then(()=> {
-                    res.status(200).json({id: response0, mUpdated: mediaOrderUpdated})
+                    res.status(200).json({id: response0, mUpdated: orderUpdated})
                 })
                 .catch((err) => res.send(err))
             })
