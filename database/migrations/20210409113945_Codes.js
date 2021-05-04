@@ -4,7 +4,7 @@ exports.up = function(knex) {
       .createTable("Codes", (tbl) => {
         tbl.increments("id").unique().notNullable()
         tbl.string("Code").unique().notNullable()
-        tbl.string("Email").references("Email").inTable("Companies").notNullable()
+        tbl.string("Email").references("Email").inTable("Companies").unique().notNullable()
           .onUpdate("CASCADE")
           .onDelete("CASCADE")
       })

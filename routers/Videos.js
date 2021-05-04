@@ -11,7 +11,6 @@ router.post("/", (req, res) => {
         } else {
             model0.create(req.body.form)
             .then((response0) => {
-                console.log(response0)
                 let videoOrderUpdated = ""
                 if (req.body.idAbove === -1) {
                     videoOrderUpdated = req.body.videoOrder + response0[0].toString() + ' '
@@ -28,9 +27,8 @@ router.post("/", (req, res) => {
                         }
                     }
                 }
-                console.log(req.body.form.Company, videoOrderUpdated)
                 model1.updateVideoOrder({company: req.body.form.Company, voUpdated: videoOrderUpdated})
-                .then((response1)=> {
+                .then(()=> {
                     res.status(200).json({id: response0, voUpdated: videoOrderUpdated})
                 })
                 .catch((err) => res.send(err))
@@ -146,8 +144,9 @@ router.patch("/:company", (req, res) => {
                                 res.status(200).json({voUpdated: voUpdated});
                             })
                             .catch((err) => res.send(err));
+                        } else {
+                            res.status(200).json({voUpdated: voUpdated});
                         }
-                        res.status(200).json({voUpdated: voUpdated});
                     })
                     .catch((err)=> res.send(err))
                 })

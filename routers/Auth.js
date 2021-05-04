@@ -175,7 +175,7 @@ router.post("/admin/check-code/:companyUrl/:companyID", async (req, res) => {
             res.status(400).json({auth: false})
         }
     })
-    .catch(()=> res.status(200).json(false))
+    .catch((err)=> res.status(400).json(err))
 })
 
 router.delete("/admin/delete-code", (req, res) => {
