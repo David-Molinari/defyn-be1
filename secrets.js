@@ -1,11 +1,10 @@
-const SecretsLocal = require('./secrets-local');
-
 let secret
 
-if (process.env.NODE_ENV == 'production') {
-  secret = process.env.JWT_SECRET
-} else {
+if (process.env.NODE_ENV == 'development') {
+  const SecretsLocal = require('./secrets-local');
   secret = SecretsLocal.jwtSecret
+} else {
+  secret = process.env.JWT_SECRET
 }
 
 module.exports = {
