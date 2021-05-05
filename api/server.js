@@ -10,11 +10,12 @@ const paymentRouter = require("../routers/Payment")
 
 const server = express();
 
-const trustedSites = ['http://localhost:3000']
-// const trustedSites = process.env.TRUSTED_SITES.split(',')
-
 const corsOptions = function (req, callback) {
         let corsOptions = {}
+        let trustedSites = ['http://localhost:3000']
+        if (process.env.NODE_ENV == 'production') {
+                trustedSites = process.env.TRUSTED_SITES.split(',')
+        }
         if(trustedSites.indexOf(req.header('Origin')) !== -1) {
                 corsOptions = { origin: true }
         } else {

@@ -1,5 +1,14 @@
+const SecretsLocal = require('./secrets-local');
+
+let secret
+
+if (process.env.NODE_ENV == 'production') {
+  secret = process.env.JWT_SECRET
+} else {
+  secret = SecretsLocal.jwtSecret
+}
+
 module.exports = {
-    // jwtSecret: process.env.JWT_SECRET,
-    jwtSecret: "Shh... keep it secret, keep it safe!",
+    jwtSecret: secret,
     mailPassword: process.env.EMAIL_PASS
   };
