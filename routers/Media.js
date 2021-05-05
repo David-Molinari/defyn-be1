@@ -107,7 +107,7 @@ router.get("/options/admin/:Company", (req, res) => {
             medOptions0.forEach((value, key) => {
                 medOptions1.push({label: value, rating: 'safe', value: value})
             })
-            medOptions1.push({label: "Add media", rating: 'safe', value: "Add media"})
+            medOptions1.push({label: "Add audio", rating: 'safe', value: "Add audio"})
             res.json(medOptions1)
         })
         .catch((err) => res.send(err));
