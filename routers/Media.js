@@ -136,7 +136,7 @@ router.patch("/:company", (req, res) => {
                         slice1 = mUpdatedTemp.slice(addPlace)
                         mUpdated = slice0 + req.body.form.id.toString() + ' ' + slice1
                     }
-                    model1.updateOrder({mUpdated: mUpdated, company: req.params.company})
+                    model1.updateOrder({mediaUpdated: mUpdated, company: req.params.company})
                     .then(() => {
                         if (req.body.form.Name || req.body.form.Link) {
                             model0.update(req.body.form)

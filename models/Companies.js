@@ -36,7 +36,7 @@ function update(insert) {
 }
 
 function updateOrder(insert) {
-    return db("Companies").update("Order", insert.mUpdated).where("id", insert.company);
+    return db("Companies").update("Order", insert.mediaUpdated).where("id", insert.company);
 }
 
 function del(insert) {
