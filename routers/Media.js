@@ -9,8 +9,10 @@ router.post("/", (req, res) => {
         if (error) {
           res.status(401).json({ message: "you cannot pass!" });
         } else {
+            console.log(req.body)
             model0.create(req.body.form)
             .then((response0) => {
+                console.log(response0)
                 let orderUpdated = ""
                 if (req.body.idAbove === -1) {
                     orderUpdated = req.body.order + response0[0].toString() + ' '
@@ -119,9 +121,11 @@ router.patch("/:company", (req, res) => {
         if (error) {
           res.status(401).json({ message: "you cannot pass!" });
         } else {
+            console.log(req.body)
             if (req.body.mediaIDAbove) {
                 model1.readOrder(req.params.company)
                 .then((response0) => {
+                    console.log(response0)
                     let mUpdated
                     let index0 = response0[0].Order.search(req.body.form.id.toString())
                     let slice0 = response0[0].Order.slice(0, index0 - 1)
@@ -136,7 +140,8 @@ router.patch("/:company", (req, res) => {
                         slice1 = mUpdatedTemp.slice(addPlace)
                         mUpdated = slice0 + req.body.form.id.toString() + ' ' + slice1
                     }
-                    model1.updateOrder({mediaUpdated: mUpdated, company: req.params.company})
+                    console.log(mUpdated)
+                    model1.updateOrder({mUpdated: mUpdated, company: req.params.company})
                     .then(() => {
                         if (req.body.form.Name || req.body.form.Link) {
                             model0.update(req.body.form)
