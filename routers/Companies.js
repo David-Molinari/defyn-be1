@@ -11,7 +11,7 @@ router.post("/", (req, res) => {
 })
 
 router.get("/:URL", (req, res) => {
-    let updatedURL = req.params.URL.replace('-', '.')
+    let updatedURL = req.params.URL.replaceAll('-', '.')
     model.read(updatedURL)
         .then((response) => {
             res.json(response);
