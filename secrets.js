@@ -1,5 +1,4 @@
 module.exports = {
-    // jwtSecret: process.env.JWT_SECRET,
-    jwtSecret: "Shh... keep it secret, keep it safe!",
+    jwtSecret: process.env.JWT_SECRET,
     mailPassword: process.env.EMAIL_PASS
   };
