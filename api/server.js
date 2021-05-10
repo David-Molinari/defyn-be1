@@ -6,7 +6,6 @@ const companiesRouter = require("../routers/Companies");
 const mediaRouter = require("../routers/Media");
 const usersRouter = require("../routers/Users");
 const authRouter = require("../routers/Auth")
-const paymentRouter = require("../routers/Payment")
 
 const server = express();
 
@@ -36,6 +35,5 @@ server.use("/api/companies", companiesRouter);
 server.use("/api/media", mediaRouter);
 server.use("/api/users", usersRouter);
 server.use("/api/auth", authRouter);
-server.use("/api/payment", paymentRouter);
 
 module.exports = server;
