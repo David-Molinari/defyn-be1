@@ -5,7 +5,6 @@ exports.up = function(knex) {
         tbl.increments("id").unique().notNullable()
         tbl.string("Name").notNullable()
         tbl.string("Link").notNullable()
-        // tbl.boolean("Unpaid").notNullable()
         tbl.integer("Company").references("id").inTable("Companies").notNullable()
             .onUpdate("CASCADE")
             .onDelete("CASCADE")

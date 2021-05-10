@@ -5,14 +5,8 @@ exports.up = function(knex) {
         tbl.increments("id").unique().notNullable();
         tbl.string("URL").unique().notNullable();
         tbl.string("Name").notNullable();
-        tbl.string("Email").unique().notNullable();
-        // tbl.string("StripeID").notNullable();
+        tbl.string("Email").unique().notNullable();;
         tbl.string("Order").notNullable();
-        // tbl.string("Price").notNullable();
-        // tbl.bytea("Logo")
-        // tbl.string("Color1")
-        // tbl.string("Color2")
-        // tbl.string("Font")
     })
 };
 
