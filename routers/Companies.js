@@ -1,5 +1,4 @@
 const router = require("express").Router();
-
 const model = require("../models/Companies");
 
 router.post("/", (req, res) => {
@@ -11,8 +10,7 @@ router.post("/", (req, res) => {
 })
 
 router.get("/:URL", (req, res) => {
-    let updatedURL = req.params.URL.replace('-', '.')
-    model.read(updatedURL)
+    model.read(req.params.URL)
         .then((response) => {
             res.json(response);
         })
