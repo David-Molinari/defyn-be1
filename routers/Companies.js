@@ -5,7 +5,9 @@ const bcrypt = require("bcryptjs");
 const secrets = require("../secrets");
 
 router.post("/", (req, res) => {
-    model.create(req.body)
+    const rounds = process.env.HASH_ROUNDS || 14;
+    const hash = bcrypt.hashSync(req.body.Code, rounds);
+    model.create({...req.body, Code: hash})
         .then((response) => {
             res.status(200).json(response)
         })
@@ -34,20 +36,6 @@ router.delete("/", (req, res) => {
             res.json(response)
         })
         .catch((err) => res.send(err))
-})
-
-router.post("/admin/add-code", (req, res) => {
-    const rounds = process.env.HASH_ROUNDS || 14;
-    const hash = bcrypt.hashSync(req.body.Code, rounds);
-    const encryptedCode = hash;
-
-    model.addCode({Code: encryptedCode, Email: req.body.Email})
-    .then((response)=> {
-        res.status(200).json(response)
-    })
-    .catch((err)=> {
-        res.status(400).json(err)
-    })
 })
 
 router.post("/admin/check-code/:companyUrl/:companyID", (req, res) => {

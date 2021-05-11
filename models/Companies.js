@@ -5,7 +5,6 @@ module.exports = {
   read,
   readByID,
   del,
-  addCode,
   getCodeInfo,
   deleteCode
 };
@@ -24,10 +23,6 @@ function readByID(insert) {
 
 function del(insert) {
     return db("Companies").del().where("id", insert);
-}
-
-function addCode(insert) {
-    return db("Companies").update("Code", insert.Code).where("Email", insert.Email);
 }
 
 function getCodeInfo(insert) {
