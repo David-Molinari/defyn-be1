@@ -10,6 +10,7 @@ router.post("/", (req, res) => {
         } else {
             model0.create(req.body.form)
             .then((response0) => {
+                console.log(response0)
                 res.status(200).json({id: response0})
             })
             .catch((err) => res.send(err))
