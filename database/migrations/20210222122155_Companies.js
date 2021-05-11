@@ -6,7 +6,7 @@ exports.up = function(knex) {
         tbl.string("URL").unique().notNullable();
         tbl.string("Name").notNullable();
         tbl.string("Email").unique().notNullable();;
-        tbl.string("Order").notNullable();
+        tbl.string("Code").notNullable();
     })
 };
 

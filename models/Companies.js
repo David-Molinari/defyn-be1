@@ -4,11 +4,10 @@ module.exports = {
   create,
   read,
   readByID,
-  readStripeIDByEmail,
-  readOrder,
-  update,
-  updateOrder,
-  del
+  del,
+  addCode,
+  getCodeInfo,
+  deleteCode
 };
 
 function create(insert) {
@@ -23,22 +22,18 @@ function readByID(insert) {
     return db("Companies").select("*").where("id", insert);
 }
 
-function readStripeIDByEmail(insert) {
-    return db("Companies").select("StripeID").where("Email", insert);
-}
-
-function readOrder(insert) {
-    return db("Companies").select("Order").where("id", insert)
-}
-
-function update(insert) {
-    return db("Companies").update("StripeID", insert.id).where("Email", insert.email);
-}
-
-function updateOrder(insert) {
-    return db("Companies").update("Order", insert.mUpdated).where("id", insert.company);
-}
-
 function del(insert) {
     return db("Companies").del().where("id", insert);
+}
+
+function addCode(insert) {
+    return db("Companies").update("Code", insert.Code).where("Email", insert.Email);
+}
+
+function getCodeInfo(insert) {
+    return db("Companies").select("*").where("Email", insert)
+}
+
+function deleteCode(insert) {
+    return db("Companies").where("Email", insert).update("Code", "");
 }
