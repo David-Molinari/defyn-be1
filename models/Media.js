@@ -9,7 +9,11 @@ module.exports = {
 };
 
 function create(insert) {
-    return db("Media").insert(insert);
+    if (process.env.NODE_ENV == "development") {
+        return db("Media").insert(insert);
+    } else {
+        return db("Media").insert(insert).returning('id');
+    }
 }
 
 function read(insert) {
