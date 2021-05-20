@@ -24,7 +24,7 @@ server.use(helmet());
 server.use(cors(corsOptions));
 server.use(express.json());
 
-server.get('/', (req ,res) => {
+server.get('/', (req, res) => {
         res.send('Hello!')
 })
 

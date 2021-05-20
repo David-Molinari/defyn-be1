@@ -4,9 +4,11 @@ const secrets = require("../secrets");
 const model0 = require("../models/Media");
 
 router.post("/", (req, res) => {
-    jwt.verify(req.headers.authorization, secrets.jwtSecret, (error) => {
+    jwt.verify(req.headers.authorization, 
+        secrets.jwtSecret, (error) => {
         if (error) {
-          res.status(401).json({ message: "you cannot pass!" });
+          res.status(401).json({ 
+              message: "you cannot pass!" });
         } else {
             model0.create(req.body.form)
             .then((response0) => {
@@ -31,7 +33,8 @@ router.get("/options/not-admin/:Company", (req, res) => {
     .then((response1) => {
         let medOptions0 = []
         response1.forEach((med) => {
-            medOptions0.push({label: med.Name, rating: 'safe', value: med.Name})
+            medOptions0.push({label: med.Name, 
+                rating: 'safe', value: med.Name})
         })
         res.status(200).json(medOptions0)
     })
@@ -43,18 +46,22 @@ router.get("/options/admin/:Company", (req, res) => {
     .then((response1) => {
         let medOptions0 = []
         response1.forEach((med) => {
-            medOptions0.push({label: med.Name, rating: 'safe', value: med.Name})
+            medOptions0.push({label: med.Name, 
+                rating: 'safe', value: med.Name})
         })
-        medOptions0.push({label: "Add audio", rating: 'safe', value: "Add audio"})
+        medOptions0.push({label: "Add audio", 
+            rating: 'safe', value: "Add audio"})
         res.status(200).json(medOptions0)
     })
     .catch((err) => res.send(err));
 });
 
 router.patch("/:company", (req, res) => {
-    jwt.verify(req.headers.authorization, secrets.jwtSecret, (error) => {
+    jwt.verify(req.headers.authorization, 
+        secrets.jwtSecret, (error) => {
         if (error) {
-          res.status(401).json({ message: "you cannot pass!" });
+          res.status(401).json({ 
+              message: "you cannot pass!" });
         } else {
             model0.update(req.body.form)
             .then((response) => {
@@ -66,9 +73,11 @@ router.patch("/:company", (req, res) => {
   });
 
 router.delete("/:mediaID/:company", (req, res) => {
-    jwt.verify(req.headers.authorization, secrets.jwtSecret, (error) => {
+    jwt.verify(req.headers.authorization, 
+        secrets.jwtSecret, (error) => {
         if (error) {
-          res.status(401).json({ message: "you cannot pass!" });
+          res.status(401).json({ 
+              message: "you cannot pass!" });
         } else {
             model0.del({id: req.params.mediaID})
             .then((response0) => {

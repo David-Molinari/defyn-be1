@@ -42,7 +42,8 @@ router.post("/admin/check-code/:companyUrl/:companyID", (req, res) => {
     model.getCodeInfo(req.body.Email)
     .then((response0)=> {
         if (bcrypt.compareSync(req.body.Code, response0[0].Code)) {
-            res.status(200).json({auth: true, token: generateToken(req.params.companyID)})
+            res.status(200).json({auth: true, 
+                token: generateToken(req.params.companyID)})
         } else {
             res.status(400).json({auth: false})
         }
