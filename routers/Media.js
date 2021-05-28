@@ -12,7 +12,6 @@ router.post("/", (req, res) => {
         } else {
             model0.create(req.body.form)
             .then((response0) => {
-                console.log(response0)
                 res.status(200).json({id: response0})
             })
             .catch((err) => res.send(err))
@@ -71,6 +70,19 @@ router.patch("/:company", (req, res) => {
         }
     })
   });
+
+router.patch("/add-open/:mediaID", (req, res) => {
+    model0.readByID(req.params.mediaID)
+    .then((response) => {
+        let opens = `${response[0].Opens}, ${req.body.ipDate}`
+        model0.update({id: req.params.mediaID, Opens: opens})
+        .then(() => {
+            res.status(200)
+        })
+        .catch((err) => res.send(err));
+    })
+    .catch((err) => res.send(err));
+})
 
 router.delete("/:mediaID/:company", (req, res) => {
     jwt.verify(req.headers.authorization, 

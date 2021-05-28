@@ -17,7 +17,8 @@ function create(insert) {
 }
 
 function read(insert) {
-    return db("Media").select("*").where("Company", insert).orderBy('id', 'desc');
+    return db("Media").select("id", "Name", "Link", "Company")
+        .where("Company", insert).orderBy('id', 'desc');
 }
 
 function readByID(insert) {

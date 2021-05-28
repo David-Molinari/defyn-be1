@@ -73,7 +73,6 @@ function generateToken(company) {
       CompanyID: company
     };
     const secret = secrets.jwtSecret;
-    let options = {expiresIn: ""}
-    options.expiresIn = "5h"
+    let options = {expiresIn: "5h"}
     return jwt.sign(payload, secret, options);
   }

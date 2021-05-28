@@ -4,6 +4,7 @@ exports.up = function(knex) {
         tbl.increments("id").unique().notNullable()
         tbl.string("Name").notNullable()
         tbl.string("Link").notNullable()
+        tbl.string("Opens")
         tbl.integer("Company").references("id")
           .inTable("Companies").notNullable()
           .onUpdate("CASCADE")
