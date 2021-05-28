@@ -77,7 +77,7 @@ router.patch("/add-open/:mediaID", (req, res) => {
         let opens = `${response[0].Opens}, ${req.body.ipDate}`
         model0.update({id: req.params.mediaID, Opens: opens})
         .then(() => {
-            res.status(200)
+            res.status(200).send({message: 'success'})
         })
         .catch((err) => res.send(err));
     })
